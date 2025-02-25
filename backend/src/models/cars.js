@@ -13,6 +13,18 @@ const Car = sequelize.define('Car', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  manufacturer: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  year: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  image_url: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, {
   tableName: 'cars',

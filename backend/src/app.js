@@ -6,8 +6,6 @@ const carsRouter = require('./routes/cars');
 const app = express();
 const port = 5000;
 
-
-
 const sequelize = new Sequelize('jdm_cars', 'root', 'example', {
   host: 'db',
   dialect: 'mysql'
