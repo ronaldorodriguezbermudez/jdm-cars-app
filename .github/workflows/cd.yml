@@ -8,6 +8,9 @@ on:
 env:
   EC2_PUBLIC_IP: ${{ secrets.EC2_PUBLIC_IP }}
   EC2_PEM_FILE: ${{ secrets.EC2_PEM_FILE }}
+  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+  MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
   deploy:
@@ -20,6 +23,12 @@ jobs:
         run: |
           echo "${{ secrets.EC2_PEM_FILE }}" > ec2-key.pem
           chmod 600 ec2-key.pem
+
+      - name: Copy .env file to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}' > /home/ec2-user/jdm-cars-app/.env"
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}' >> /home/ec2-user/jdm-cars-app/.env"
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' >> /home/ec2-user/jdm-cars-app/.env"
 
       - name: Deploy to EC2
         run: |
