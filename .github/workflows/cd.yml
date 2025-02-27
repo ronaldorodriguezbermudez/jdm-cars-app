@@ -26,6 +26,11 @@ jobs:
           chmod 600 ec2-key.pem
 
 
+      - name: Ensure project directory exists on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "mkdir -p /home/ec2-user/jdm-cars-app"
+
+
       - name: Copy .env file to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "echo 'MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}' > /home/ec2-user/jdm-cars-app/.env"
