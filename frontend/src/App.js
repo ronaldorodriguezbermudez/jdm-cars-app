@@ -14,7 +14,7 @@ function App() {
 
   const fetchCars = async () => {
     try {
-      const response = await fetch('http://localhost:5000/cars');
+      const response = await fetch('http://backend:5000/cars');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -33,7 +33,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/cars${editingCar ? `/${editingCar}` : ''}`, {
+      const response = await fetch(`http://backend:5000/cars${editingCar ? `/${editingCar}` : ''}`, {
         method: editingCar ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -58,7 +58,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/cars/${id}`, {
+      const response = await fetch(`http://backend:5000/cars/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
