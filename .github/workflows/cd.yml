@@ -6,11 +6,11 @@ on:
       - main  # Se realiza el deploy cuando se hace merge en la rama main
 
 env:
-  EC2_PUBLIC_IP: ${{ secrets.EC2_PUBLIC_IP }}
+  EC2_PUBLIC_IP: ${{ vars.EC2_PUBLIC_IP }}
   EC2_PEM_FILE: ${{ secrets.EC2_PEM_FILE }}
   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
   MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DATABASE_URL: mysql://root:${{ secrets.MYSQL_ROOT_PASSWORD }}@db:3306/${{ secrets.MYSQL_DATABASE }}
 
 jobs:
   deploy:
@@ -26,13 +26,13 @@ jobs:
 
       - name: Copy .env file to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}' > /home/ec2-user/jdm-cars-app/.env"
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}' >> /home/ec2-user/jdm-cars-app/.env"
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' >> /home/ec2-user/jdm-cars-app/.env"
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "echo 'MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}' > /home/ec2-user/jdm-cars-app/.env"
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "echo 'MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}' >> /home/ec2-user/jdm-cars-app/.env"
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "echo 'DATABASE_URL=${{ env.DATABASE_URL }}' >> /home/ec2-user/jdm-cars-app/.env"
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} << 'EOF'
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/jdm-cars-backend:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/jdm-cars-frontend:latest
