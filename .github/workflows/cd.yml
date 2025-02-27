@@ -38,13 +38,22 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "echo 'MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}' >> /home/ec2-user/jdm-cars-app/.env"
           ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "echo 'DATABASE_URL=${{ env.DATABASE_URL }}' >> /home/ec2-user/jdm-cars-app/.env"
 
+      - name: Docker login on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}"
+
+      - name: Pull backend image on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "docker pull ${{ secrets.DOCKER_USERNAME }}/jdm-cars-backend:latest"
+
+      - name: Pull frontend image on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} "docker pull ${{ secrets.DOCKER_USERNAME }}/jdm-cars-frontend:latest"
+
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ env.EC2_PUBLIC_IP }} << 'EOF'
             set -e
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker pull ${{ secrets.DOCKER_USERNAME }}/jdm-cars-backend:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/jdm-cars-frontend:latest
             cd /home/ec2-user/jdm-cars-app
             docker-compose down || true
             docker-compose up -d
