@@ -4,8 +4,11 @@ services:
       context: ./backend
     ports:
       - "5000:5000"
+    env_file:
+      - ./backend/.env
     environment:
       - DATABASE_URL=mysql://root:example@db:3306/jdm_cars
+
     depends_on:
       - db
     networks:
@@ -16,18 +19,20 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
+    env_file:
+      - ./frontend/.env
     depends_on:
       - backend
     networks:
       - app-network
 
   db:
-    image: mysql:latest
+    build:
+      context: ./database
     ports:
       - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=example
-      - MYSQL_DATABASE=jdm_cars
+    env_file:
+      - ./database/.env
     volumes:
       - db-data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -39,4 +44,4 @@ networks:
     driver: bridge
 
 volumes:
-  db-data:   
+  db-data:

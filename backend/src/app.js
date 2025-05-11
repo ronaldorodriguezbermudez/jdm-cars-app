@@ -4,11 +4,11 @@ const { Sequelize } = require('sequelize');
 const carsRouter = require('./routes/cars');
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
-const sequelize = new Sequelize('jdm_cars', 'root', 'example', {
-  host: 'db',
-  dialect: 'mysql'
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  host: process.env.DB_HOST || 'db',
+  dialect: process.env.DB_DIALECT || 'mysql',
 });
 
 app.use(cors()); // Enable CORS
