@@ -4,7 +4,9 @@ on:
   pull_request:
     branches:
       - develop  # Se ejecuta CI cuando hay un PR hacia la rama develop
-      - docker-compose
+  push:
+    branches:
+      - docker-compose 
   workflow_dispatch:
 
 jobs:
