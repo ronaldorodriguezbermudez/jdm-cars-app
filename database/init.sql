@@ -16,7 +16,7 @@ INSERT INTO `cars` (`name`, `manufacturer`, `year`, `image_url`) VALUES
 ('Honda NSX', 'Honda', 1992, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcqA7avN1lBCppyQBihnyaAw4vbSCfOEJbOw&s'),
 ('Subaru Impreza WRX STI', 'Subaru', 2004, 'https://images.collectingcars.com/017241/Subaru-WRX-Solberg-100.jpg?w=1263&fit=fillmax&crop=edges&auto=format,compress&cs=srgb&q=85'),
 ('Mitsubishi Lancer Evolution', 'Mitsubishi', 2005, 'https://cdn.motor1.com/images/mgl/NGOjkY/s1/2005-mitsubishi-lancer-evolution-miev-konsepti.jpg'),
-('Nissan 300ZX', 'Nissan', 1990, 'https://silverarrowcars.com/wp-content/uploads/2022/02/1989-Nissan-300ZX-0001.jpg'),
+('Nissan 300ZX', 'Nissan', 1990, 'https://issimi-vehicles-cdn.b-cdn.net/publicamlvehiclemanagement/VehicleDetails/619/timestamped-1724283387465-2%20(2).jpeg?width=3840&quality=75'),
 ('Toyota MR2', 'Toyota', 1995, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwrSG_85r9ueCV-A1NixiM7XlZGNJzPJyvg&s'),
 ('Mazda MX-5 Miata', 'Mazda', 1990, 'https://cdn.motor1.com/images/mgl/P30ZBX/s1/1990-mazda-mx-5-miata-sold-on-bring-a-trailer.jpg'),
 ('Honda S2000', 'Honda', 2000, 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/HondaS2000-004.jpg/1200px-HondaS2000-004.jpg');
