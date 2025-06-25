@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - develop  # Se ejecuta CI cuando hay un PR hacia la rama develop
+  workflow_dispatch:
 
 jobs:
   build-and-push:
