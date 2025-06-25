@@ -1,34 +1,36 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('jdm_cars', 'root', 'example', {
-  host: 'db',
-  dialect: 'mysql'
+
+// Usa DATABASE_URL desde las variables de entorno
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'mysql',
+  logging: console.log, // Opcional: para depuración
 });
 
 const Car = sequelize.define('Car', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   manufacturer: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   year: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   image_url: {
     type: DataTypes.STRING,
-    allowNull: false
-  }
+    allowNull: false,
+  },
 }, {
   tableName: 'cars',
-  timestamps: false
+  timestamps: false,
 });
 
 module.exports = Car;

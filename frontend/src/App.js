@@ -14,7 +14,8 @@ function App() {
 
   const fetchCars = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cars`);
+      // const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cars`);
+      const response = await fetch(`/api/cars`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -33,7 +34,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cars${editingCar ? `/${editingCar}` : ''}`, {
+      const response = await fetch(`/api/cars${editingCar ? `/${editingCar}` : ''}`, {
         method: editingCar ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -58,7 +59,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cars/${id}`, {
+      const response = await fetch(`/api/cars/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

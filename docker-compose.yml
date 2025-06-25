@@ -35,7 +35,7 @@ services:
       - ./database/.env
     volumes:
       - db-data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      #- ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
 
