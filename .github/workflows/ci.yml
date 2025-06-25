@@ -36,3 +36,9 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/jdm-cars-frontend:latest
+      - name: Build and push database image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./database   # Ajusta si tu Dockerfile está en otra ruta
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/jdm-cars-db:latest
