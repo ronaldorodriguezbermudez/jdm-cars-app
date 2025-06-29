@@ -75,7 +75,6 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/jdm-cars-db:v1.0.${{ github.run_number }}
 
       - name: Trigger Helm Chart Update
-        if: env.backend_changed == 'true' || env.frontend_changed == 'true' || env.database_changed == 'true'
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PAT_GITHUB }}
@@ -83,7 +82,7 @@ jobs:
           event-type: update-helm-chart
           client-payload: |
             {
-              "frontend_tag": "${{ env.frontend_changed == 'true' && format('v1.0.{0}', github.run_number) || '' }}",
-              "backend_tag": "${{ env.backend_changed == 'true' && format('v1.0.{0}', github.run_number) || '' }}",
-              "db_tag": "${{ env.database_changed == 'true' && format('v1.0.{0}', github.run_number) || '' }}"
+              "frontend_tag": "v1.0.${{ github.run_number }}",
+              "backend_tag": "v1.0.${{ github.run_number }}",
+              "db_tag": "v1.0.${{ github.run_number }}"
             }
