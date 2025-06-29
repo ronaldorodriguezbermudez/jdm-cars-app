@@ -1,10 +1,8 @@
 name: Build and Push Docker Images
 
 on:
- 
   pull_request:
     branches: [develop]
-    
   push:
     branches: [docker-compose]
   workflow_dispatch:
@@ -16,8 +14,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Permite usar HEAD^ en git diff
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -25,16 +21,18 @@ jobs:
       - name: Detect changed directories
         id: changes
         run: |
-          echo "Detecting changes for push event..."
-
-          # Verifica si HEAD^ existe (primer commit o force-push puede fallar)
-          if git rev-parse HEAD^ >/dev/null 2>&1; then
-            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          echo "Detecting base ref for comparison..."
+          
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF="origin/${{ github.base_ref }}"
           else
-            echo "No se encontró HEAD^, asumiendo que todos los archivos cambiaron"
-            CHANGED_FILES=$(git ls-files)
+            BASE_REF="HEAD^"
           fi
 
+          echo "Using base ref: $BASE_REF"
+          git fetch origin $BASE_REF || true
+
+          CHANGED_FILES=$(git diff --name-only $BASE_REF...HEAD)
           echo "Changed files:"
           echo "$CHANGED_FILES"
 
