@@ -1,12 +1,11 @@
-name: CI Pipeline
+# This workflow builds and pushes Docker images for the JDM Cars application
+name: Build and Push Docker Images
 
 on:
   pull_request:
-    branches:
-      - develop  # Se ejecuta CI cuando hay un PR hacia la rama develop
+    branches: [develop]
   push:
-    branches:
-      - docker-compose 
+    branches: [docker-compose]
   workflow_dispatch:
 
 jobs:
@@ -46,3 +45,16 @@ jobs:
           context: ./database  
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/jdm-cars-db:v1.0.${{ github.run_number }}
+
+      - name: Trigger Helm Chart Update
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_GITHUB }}  
+          repository: ronaldorodriguezbermudez/helm-chart-app
+          event-type: update-helm-chart
+          client-payload: |
+            {
+              "frontend_tag": "v1.0.${{ github.run_number }}",
+              "backend_tag": "v1.0.${{ github.run_number }}",
+              "db_tag": "v1.0.${{ github.run_number }}"
+            }
