@@ -82,7 +82,7 @@ function App() {
       </header>
       {error && <p>Error: {error}</p>}
       <button onClick={toggleFormVisibility} className="toggle-form-button">
-        {isFormVisible ? 'Hide Form' : 'Show Form'}
+        {isFormVisible ? 'Hide Form' : 'Show Form to Edit/Add Cars'}
       </button>
       {isFormVisible && (
         <form onSubmit={handleSubmit} className="car-form">
